@@ -62,6 +62,7 @@ namespace leap::physics
 		virtual bool Raycast(const glm::vec3& start, const glm::vec3& direction, float distance, RaycastHit& hitInfo) override;
 
 		physx::PxPhysics* GetPhysics() const { return m_pPhysics; }
+		physx::PxCooking* GetCooking() const { return m_pCooking; }
 
 	private:
 		void OnSimulationEvent(const SimulationEvent& e);

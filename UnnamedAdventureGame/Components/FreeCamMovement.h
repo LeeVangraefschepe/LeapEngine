@@ -15,11 +15,15 @@ namespace unag
 		FreeCamMovement(FreeCamMovement&& other) = delete;
 		FreeCamMovement& operator=(const FreeCamMovement& other) = delete;
 		FreeCamMovement& operator=(FreeCamMovement&& other) = delete;
+
+		void SetSpeed(float speed) { m_Speed = speed; }
+
 	private:
 		virtual void Awake() override;
 		virtual void Start() override;
 		virtual void OnDestroy() override;
 
+		float m_Speed{1.f};
 		std::vector <std::unique_ptr<leap::Command>> m_Commands{};
 	};
 }

@@ -144,6 +144,8 @@ std::unique_ptr<leap::physics::IShape> leap::physics::PhysXEngine::CreateShape(v
         return std::make_unique<PhysXSphereShape>(this, pOwner, static_cast<PhysXMaterial*>(pMaterial));
     case EShape::Capsule:
         return std::make_unique<PhysXCapsuleShape>(this, pOwner, static_cast<PhysXMaterial*>(pMaterial));
+    case EShape::Mesh:
+        return std::make_unique<PhysXMeshShape>(this, pOwner, static_cast<PhysXMaterial*>(pMaterial));
     }
 
     return nullptr;

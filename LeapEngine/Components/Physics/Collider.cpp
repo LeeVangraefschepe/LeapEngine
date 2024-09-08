@@ -12,6 +12,7 @@
 void leap::Collider::BaseSetupShape()
 {
 	SetupShape(m_pMaterial.get());
+	if (!m_pShape) return;
 	m_pShape->SetTrigger(m_IsTrigger);
 }
 
@@ -20,6 +21,7 @@ void leap::Collider::Awake()
 	if (m_pOwningObject) return;
 
 	BaseSetupShape();
+	if (!m_pShape) return;
 
 	physics::IPhysics& physics{ ServiceLocator::GetPhysics() };
 
@@ -49,6 +51,7 @@ void leap::Collider::Awake()
 
 void leap::Collider::OnDestroy()
 {
+	if (!m_pShape) return;
 	ServiceLocator::GetPhysics().Get(m_pOwningObject)->RemoveShape(m_pShape.get());
 	GetTransform()->OnScaleChanged.RemoveListener(this);
 }

@@ -24,7 +24,8 @@ add_executable(UnnamedAdventureGame ${WIN32_EXECUTABLE}
 	"Components/ImGuiSceneChooser.cpp"
 	"Components/PointConversionTest.cpp" 
 	"Scenes/ExtendedCameraTest.cpp"
-	"Scenes/ParticleTest.cpp")
+	"Scenes/ParticleTest.cpp"
+	"Scenes/Physics/MeshesScene.cpp")
 
 target_include_directories(
 	LeapEngine PUBLIC 
