@@ -37,6 +37,24 @@ void leap::Mesh::SetWritable(bool isWritable)
 	m_pWritableMesh = std::make_unique<WritableMesh>();
 }
 
+bool leap::Mesh::IsEmpty() const
+{
+	if (!m_pMesh->IsValid()) return true;
+	return m_pMesh->GetObject()->IsEmpty();
+}
+
+std::vector<unsigned> leap::Mesh::GetIndices() const
+{
+	if (m_pMesh->IsValid()) return m_pMesh->GetObject()->GetIndices();
+	return std::vector<unsigned>{};
+}
+
+std::vector<leap::Vertex> leap::Mesh::GetVertices() const
+{
+	if (m_pMesh->IsValid()) return m_pMesh->GetObject()->GetVertices();
+	return std::vector<Vertex>{};
+}
+
 void leap::Mesh::Load(const std::string& filePath, bool unique)
 {
 	// Delete any writable mesh

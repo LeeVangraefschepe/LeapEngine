@@ -1,12 +1,10 @@
 #pragma once
 
 #include "Singleton.h"
-
-#include "../Data/Vertex.h"
-
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include "Vertex.h"
 
 struct ID3D11Buffer;
 struct ID3D11Device;

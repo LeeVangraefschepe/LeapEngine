@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "Vertex.h"
+
 namespace leap
 {
 	namespace graphics
@@ -79,6 +81,10 @@ namespace leap
 
 		void SetWritable(bool isWritable);
 		bool IsWritable() const { return m_pWritableMesh != nullptr; }
+		bool IsEmpty() const;
+
+		std::vector<unsigned> GetIndices() const;
+		std::vector<Vertex> GetVertices() const;
 
 		void Load(const std::string& filePath, bool unique = false);
 

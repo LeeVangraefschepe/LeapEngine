@@ -4,7 +4,7 @@
 #include "vec3.hpp"
 #include "vec2.hpp"
 
-namespace leap::graphics
+namespace leap
 {
 	struct Vertex final
 	{

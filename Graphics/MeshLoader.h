@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Data/Vertex.h"
+#include "Vertex.h"
 
 #include <string>
 #include <vector>

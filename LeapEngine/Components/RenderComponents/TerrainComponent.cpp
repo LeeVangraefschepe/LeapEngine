@@ -3,7 +3,7 @@
 #include <Interfaces/ITexture.h>
 #include <Interfaces/IRenderer.h>
 #include <Interfaces/IMeshRenderer.h>
-#include <Data/Vertex.h>
+#include <Vertex.h>
 #include <Shaders/Heightmap.h>
 
 #include "../../ServiceLocator/ServiceLocator.h"
@@ -183,7 +183,7 @@ void leap::TerrainComponent::CreateMesh()
 
 	mesh.SetWritable(true);
 
-	std::vector<leap::graphics::VertexPosUV> vertices{};
+	std::vector<leap::VertexPosUV> vertices{};
 	std::vector<unsigned> indices{};
 
 	for (unsigned int x{}; x < m_Size; ++x)
@@ -192,10 +192,10 @@ void leap::TerrainComponent::CreateMesh()
 		{
 			const unsigned int startIdx{ static_cast<unsigned>(vertices.size()) };
 
-			vertices.emplace_back(leap::graphics::VertexPosUV{ { x, 0.0f, y + 1.0f }, { x, y + 1.0f } });
-			vertices.emplace_back(leap::graphics::VertexPosUV{ { x + 1.0f, 0.0f, y + 1.0f }, { x + 1.0f, y + 1.0f } });
-			vertices.emplace_back(leap::graphics::VertexPosUV{ { x + 1.0f, 0.0f, y }, { x + 1.0f, y } });
-			vertices.emplace_back(leap::graphics::VertexPosUV{ { x, 0.0f, y }, { x, y } });
+			vertices.emplace_back(leap::VertexPosUV{ { x, 0.0f, y + 1.0f }, { x, y + 1.0f } });
+			vertices.emplace_back(leap::VertexPosUV{ { x + 1.0f, 0.0f, y + 1.0f }, { x + 1.0f, y + 1.0f } });
+			vertices.emplace_back(leap::VertexPosUV{ { x + 1.0f, 0.0f, y }, { x + 1.0f, y } });
+			vertices.emplace_back(leap::VertexPosUV{ { x, 0.0f, y }, { x, y } });
 
 			indices.emplace_back(startIdx);
 			indices.emplace_back(startIdx + 1);
