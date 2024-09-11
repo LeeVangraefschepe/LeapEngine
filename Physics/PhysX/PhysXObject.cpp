@@ -52,7 +52,15 @@ void leap::physics::PhysXObject::Apply(const std::function<void(void*, const glm
 	const physx::PxTransform transform{ m_pActor->getGlobalPose() };
 
 	const glm::vec3 position{ transform.p.x, transform.p.y, transform.p.z };
-	const glm::quat rotation{ transform.q.w, transform.q.x, transform.q.y, transform.q.z };
+	glm::quat rotation{};
+	rotation.x = transform.q.x;
+	rotation.y = transform.q.y;
+	rotation.z = transform.q.z;
+	rotation.w = transform.q.w;
+
+	glm::vec3 eulerRotation = Quaternion::ToEulerDegrees(rotation);
+
+	rotation = Quaternion::FromEuler(eulerRotation + OFFSET);
 
 	setFunc(m_pOwner, position, rotation);
 }
@@ -163,7 +171,11 @@ void leap::physics::PhysXObject::UpdateTransform()
 	m_IsTransformDirty = false;
 	
 	const physx::PxVec3 position{ m_Position.x, m_Position.y, m_Position.z };
-	const physx::PxQuat rotation{ m_Rotation.x, m_Rotation.y, m_Rotation.z, m_Rotation.w };
+	// const physx::PxQuat rotation{ m_Rotation.x, m_Rotation.y, m_Rotation.z, m_Rotation.w };
+
+	const glm::quat rot = Quaternion::FromEuler(Quaternion::ToEulerDegrees(m_Rotation) + glm::vec3 { 0,45,-90 });
+	const physx::PxQuat rotation{ rot.x, rot.y, rot.z, rot.w };
+
 	const physx::PxTransform transform{ position, rotation };
 
 	m_pActor->setGlobalPose(transform);

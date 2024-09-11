@@ -11,7 +11,9 @@
 #include "Components/Physics/MeshCollider.h"
 #include "Components/Physics/Rigidbody.h"
 #include "Components/RenderComponents/MeshRenderer.h"
+#include "Graphics/Material.h"
 #include "Graphics/Mesh.h"
+#include "Shaders/PosNorm3D.h"
 
 void unag::MeshesScene::Load(leap::Scene& scene)
 {
@@ -23,19 +25,41 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 	freecam->SetSpeed(1.f);
 
 	leap::GameObject* pFloorObj{ scene.CreateGameObject("Floor") };
-	pFloorObj->GetTransform()->SetWorldPosition(0.0f, -5.0f, 0.0f);
+	pFloorObj->GetTransform()->SetWorldPosition(0.0f, -3.0f, 0.0f);
 	leap::BoxCollider* pFloorCollider{ pFloorObj->AddComponent<leap::BoxCollider>() };
 	pFloorCollider->SetSize(10, 2, 10);
 
 	leap::Mesh mesh{ "Data/bunny.obj" };
+	const leap::Material meshMat{ leap::Material::Create<leap::graphics::shaders::PosNorm3D>("Mesh Material") };
 
-	leap::GameObject* pMeshObj{ scene.CreateGameObject("Mesh") };
 
-	leap::MeshRenderer* pMeshRenderer{ pMeshObj->AddComponent<leap::MeshRenderer>() };
-	pMeshRenderer->SetMesh(mesh);
+	{
+		leap::GameObject* pMeshObj{ scene.CreateGameObject("Mesh") };
+		pMeshObj->GetTransform()->SetWorldPosition(-3, 0, 0);
 
-	leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
-	pMeshCollider->SetMesh(mesh);
+		leap::MeshRenderer* pMeshRenderer{ pMeshObj->AddComponent<leap::MeshRenderer>() };
+		pMeshRenderer->SetMesh(mesh);
+		pMeshRenderer->SetMaterial(meshMat);
 
-	pMeshObj->AddComponent<leap::Rigidbody>();
+		leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
+		pMeshCollider->SetMesh(mesh);
+	}
+
+	{
+		leap::GameObject* pMeshObj{ scene.CreateGameObject("MeshRB") };
+		pMeshObj->GetTransform()->SetWorldPosition(3, 0, 0);
+
+		leap::MeshRenderer* pMeshRenderer{ pMeshObj->AddComponent<leap::MeshRenderer>() };
+		pMeshRenderer->SetMesh(mesh);
+		pMeshRenderer->SetMaterial(meshMat);
+
+		leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
+		pMeshCollider->SetMesh(mesh);
+
+		auto rb = pMeshObj->AddComponent<leap::Rigidbody>();
+		rb->SetKinematic(true);
+	}
+
+	
+	// rb->SetAngularVelocity(0, 0, 1);
 }

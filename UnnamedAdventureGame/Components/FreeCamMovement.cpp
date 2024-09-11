@@ -6,6 +6,7 @@
 #include "Components/Transform/Transform.h"
 #include "GameContext/GameContext.h"
 #include "GameContext/Timer.h"
+#include "PhysX/PhysXObject.h"
 #include "SceneGraph/GameObject.h"
 
 void unag::FreeCamMovement::Awake()
@@ -72,4 +73,13 @@ void unag::FreeCamMovement::OnDestroy()
 		input.GetKeyboard()->RemoveCommand(command.get());
 		input.GetMouse()->RemoveCommand(command.get());
 	}
+}
+
+#include "ImGui/imgui.h"
+void unag::FreeCamMovement::OnGUI()
+{
+	ImGui::SetNextWindowSize(ImVec2(250, 100));
+	ImGui::Begin("PhysX offset");
+	ImGui::InputFloat3("Offset", &leap::physics::PhysXObject::OFFSET.x);
+	ImGui::End();
 }
