@@ -155,56 +155,38 @@ void leap::graphics::DirectXMesh::ReloadMesh(const CustomMesh& mesh)
 	// Keep the mesh empty if there is no vertex buffer given in the mesh
 	if (mesh.GetVertexBuffer().empty()) return;
 
-	// Set index amount and vertex size
+	// Set index amoutn and vertex size
 	m_NrIndices = static_cast<unsigned int>(mesh.GetIndexBuffer().size());
-	m_NrVertices = static_cast<unsigned int>(mesh.GetVertexBuffer().size());
 	m_VertexSize = mesh.GetVertexSize();
 
-	// Create Vertex Buffer
+	// Create vertex buffer
 	D3D11_BUFFER_DESC bd{};
-	bd.Usage = D3D11_USAGE_STAGING;  // Staging allows CPU read/write access
-	bd.ByteWidth = sizeof(Vertex) * m_NrVertices;
-	bd.BindFlags = 0;
-	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
+	bd.Usage = D3D11_USAGE_IMMUTABLE;
+	bd.ByteWidth = static_cast<unsigned>(mesh.GetVertexBuffer().size());
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
 
-	// Create vertex buffer without initial data
-	HRESULT result = m_pEngine->GetDevice()->CreateBuffer(&bd, nullptr, &m_pVertexBuffer);
+	D3D11_SUBRESOURCE_DATA initData{};
+	initData.pSysMem = mesh.GetVertexBuffer().data();
+
+	HRESULT result{ m_pEngine->GetDevice()->CreateBuffer(&bd, &initData, &m_pVertexBuffer) };
 	if (FAILED(result))
 	{
 		Debug::LogError("DirectXEngine Error : Failed to create vertex buffer from obj");
 		return;
 	}
 
-	// Map/Unmap to populate vertex buffer with data
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	result = m_pEngine->GetContext()->Map(m_pVertexBuffer, 0, D3D11_MAP_READ, 0, &mappedResource);
-	if (SUCCEEDED(result))
-	{
-		// Copy vertex data to the buffer
-		memcpy(mappedResource.pData, mesh.GetVertexBuffer().data(), mesh.GetVertexBuffer().size() * m_VertexSize);
-		m_pEngine->GetContext()->Unmap(m_pVertexBuffer, 0);
-	}
+	// Create index buffer
+	bd.Usage = D3D11_USAGE_IMMUTABLE;
+	bd.ByteWidth = sizeof(unsigned int) * static_cast<unsigned int>(m_NrIndices);
+	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+	bd.MiscFlags = 0;
+	initData.pSysMem = mesh.GetIndexBuffer().data();
 
-	// Modify buffer desc for indices
-	bd.ByteWidth = sizeof(unsigned int) * m_NrIndices;
-
-	// Create bufffer
-	result = m_pEngine->GetDevice()->CreateBuffer(&bd, nullptr, &m_pIndexBuffer);
-	if (FAILED(result))
-	{
-		Debug::LogError("DirectXEngine Error : Failed to create index buffer from obj");
-		return;
-	}
-
-	// Map/Unmap to populate index buffer with data
-	result = m_pEngine->GetContext()->Map(m_pIndexBuffer, 0, D3D11_MAP_READ, 0, &mappedResource);
-	if (SUCCEEDED(result))
-	{
-		// Copy index data to the buffer
-		memcpy(mappedResource.pData, mesh.GetIndexBuffer().data(), sizeof(unsigned int) * m_NrIndices);
-		m_pEngine->GetContext()->Unmap(m_pIndexBuffer, 0);
-	}
+	result = m_pEngine->GetDevice()->CreateBuffer(&bd, &initData, &m_pIndexBuffer);
+	if (FAILED(result)) Debug::LogError("DirectXEngine Error : Failed to create index buffer from obj");
 }
 
 void leap::graphics::DirectXMesh::Remove()

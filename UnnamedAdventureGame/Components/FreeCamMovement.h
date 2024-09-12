@@ -22,7 +22,6 @@ namespace unag
 		virtual void Awake() override;
 		virtual void Start() override;
 		virtual void OnDestroy() override;
-		virtual void OnGUI() override;
 
 		float m_Speed{1.f};
 		std::vector <std::unique_ptr<leap::Command>> m_Commands{};

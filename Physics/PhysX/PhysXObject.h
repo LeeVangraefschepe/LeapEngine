@@ -40,8 +40,6 @@ namespace leap::physics
 		virtual glm::vec3 GetPosition() override;
 		virtual glm::quat GetRotation() override;
 
-		inline static glm::vec3 OFFSET{0,0,90};
-
 	private:
 		void UpdateObject(PhysXEngine* pEngine, IPhysicsScene* pScene);
 		void UpdateTransform();
@@ -61,5 +59,8 @@ namespace leap::physics
 		bool m_IsObjectDirty{ true };
 		bool m_IsTransformDirty{ true };
 		bool m_NewFrame{ false };
+
+		inline static const glm::quat OFFSET_SET{ 0.7071068f, 0, 0, -0.7071068f };
+		inline static const glm::quat OFFSET_GET{ 0.7071068f, 0, 0, 0.7071068f };
 	};
 }

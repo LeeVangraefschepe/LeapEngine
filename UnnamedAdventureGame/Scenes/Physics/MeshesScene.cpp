@@ -10,10 +10,11 @@
 #include "Components/Physics/BoxCollider.h"
 #include "Components/Physics/MeshCollider.h"
 #include "Components/Physics/Rigidbody.h"
+#include "Components/RenderComponents/DirectionalLightComponent.h"
 #include "Components/RenderComponents/MeshRenderer.h"
 #include "Graphics/Material.h"
 #include "Graphics/Mesh.h"
-#include "Shaders/PosNorm3D.h"
+#include "Shaders/Pos3D.h"
 
 void unag::MeshesScene::Load(leap::Scene& scene)
 {
@@ -24,18 +25,22 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 	FreeCamMovement* freecam = pCameraObj->AddComponent<FreeCamMovement>();
 	freecam->SetSpeed(1.f);
 
+	leap::GameObject* pDirLightObj{ scene.CreateGameObject("Directional light") };
+	pDirLightObj->AddComponent<leap::DirectionalLightComponent>();
+	pDirLightObj->GetTransform()->SetWorldRotation(50, -30, 0);
+	pDirLightObj->GetTransform()->SetWorldPosition(0, 10, 0);
+
 	leap::GameObject* pFloorObj{ scene.CreateGameObject("Floor") };
 	pFloorObj->GetTransform()->SetWorldPosition(0.0f, -3.0f, 0.0f);
 	leap::BoxCollider* pFloorCollider{ pFloorObj->AddComponent<leap::BoxCollider>() };
 	pFloorCollider->SetSize(10, 2, 10);
 
 	leap::Mesh mesh{ "Data/bunny.obj" };
-	const leap::Material meshMat{ leap::Material::Create<leap::graphics::shaders::PosNorm3D>("Mesh Material") };
-
+	const leap::Material meshMat{ leap::Material::Create<leap::graphics::shaders::Pos3D>("Mesh Material") };
 
 	{
 		leap::GameObject* pMeshObj{ scene.CreateGameObject("Mesh") };
-		pMeshObj->GetTransform()->SetWorldPosition(-3, 0, 0);
+		pMeshObj->GetTransform()->SetWorldPosition(-5, 0, 0);
 
 		leap::MeshRenderer* pMeshRenderer{ pMeshObj->AddComponent<leap::MeshRenderer>() };
 		pMeshRenderer->SetMesh(mesh);
@@ -47,7 +52,7 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 
 	{
 		leap::GameObject* pMeshObj{ scene.CreateGameObject("MeshRB") };
-		pMeshObj->GetTransform()->SetWorldPosition(3, 0, 0);
+		pMeshObj->GetTransform()->SetWorldPosition(0, 5, 0);
 
 		leap::MeshRenderer* pMeshRenderer{ pMeshObj->AddComponent<leap::MeshRenderer>() };
 		pMeshRenderer->SetMesh(mesh);
@@ -56,10 +61,21 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 		leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
 		pMeshCollider->SetMesh(mesh);
 
-		auto rb = pMeshObj->AddComponent<leap::Rigidbody>();
-		rb->SetKinematic(true);
+		pMeshObj->AddComponent<leap::Rigidbody>();
 	}
 
-	
-	// rb->SetAngularVelocity(0, 0, 1);
+	{
+		leap::GameObject* pMeshObj{ scene.CreateGameObject("MeshRB kinematic") };
+		pMeshObj->GetTransform()->SetWorldPosition(5, 0, 0);
+
+		leap::MeshRenderer* pMeshRenderer{ pMeshObj->AddComponent<leap::MeshRenderer>() };
+		pMeshRenderer->SetMesh(mesh);
+		pMeshRenderer->SetMaterial(meshMat);
+
+		leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
+		pMeshCollider->SetMesh(mesh);
+
+		// auto rb = pMeshObj->AddComponent<leap::Rigidbody>();
+		// rb->SetKinematic(true);
+	}
 }
