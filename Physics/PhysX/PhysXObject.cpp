@@ -256,10 +256,19 @@ void leap::physics::PhysXObject::CalculateCenterOfMass() const
 
 physx::PxTransform leap::physics::PhysXObject::GetPhysXTransform() const
 {
-	const glm::quat offsetRotation = m_Rotation * OFFSET_SET;
 	const physx::PxVec3 position{ m_Position.x, m_Position.y, m_Position.z };
-	const physx::PxQuat rotation{ offsetRotation.x, offsetRotation.y, offsetRotation.z, offsetRotation.w };
-	return { position, rotation };
+
+	if (m_pRigidbody)
+	{
+		const glm::quat offsetRotation = m_Rotation * OFFSET_SET;
+		const physx::PxQuat rotation{ offsetRotation.x, offsetRotation.y, offsetRotation.z, offsetRotation.w };
+		return { position, rotation };
+	}
+	else
+	{
+		const physx::PxQuat rotation{ m_Rotation.x, m_Rotation.y, m_Rotation.z, m_Rotation.w };
+		return { position, rotation };
+	}
 }
 
 void leap::physics::PhysXObject::OnRigidBodyUpdateRequest()
