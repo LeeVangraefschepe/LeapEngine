@@ -32,6 +32,7 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 
 	leap::GameObject* pFloorObj{ scene.CreateGameObject("Floor") };
 	pFloorObj->GetTransform()->SetWorldPosition(0.0f, -3.0f, 0.0f);
+
 	leap::BoxCollider* pFloorCollider{ pFloorObj->AddComponent<leap::BoxCollider>() };
 	pFloorCollider->SetSize(10, 2, 10);
 
@@ -46,13 +47,13 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 		pMeshRenderer->SetMesh(mesh);
 		pMeshRenderer->SetMaterial(meshMat);
 
-		leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
-		pMeshCollider->SetMesh(mesh);
+		// leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
+		// pMeshCollider->SetMesh(mesh);
 	}
 
 	{
 		leap::GameObject* pMeshObj{ scene.CreateGameObject("MeshRB") };
-		pMeshObj->GetTransform()->SetWorldPosition(0, 5, 0);
+		pMeshObj->GetTransform()->SetWorldPosition(0, 0, 0);
 
 		leap::MeshRenderer* pMeshRenderer{ pMeshObj->AddComponent<leap::MeshRenderer>() };
 		pMeshRenderer->SetMesh(mesh);
@@ -72,8 +73,8 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 		pMeshRenderer->SetMesh(mesh);
 		pMeshRenderer->SetMaterial(meshMat);
 
-		leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
-		pMeshCollider->SetMesh(mesh);
+		// leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
+		// pMeshCollider->SetMesh(mesh);
 
 		// auto rb = pMeshObj->AddComponent<leap::Rigidbody>();
 		// rb->SetKinematic(true);

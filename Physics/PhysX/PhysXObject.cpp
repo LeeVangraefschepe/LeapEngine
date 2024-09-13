@@ -14,6 +14,8 @@
 
 #include <Quaternion.h>
 
+#include "extensions/PxRigidActorExt.h"
+
 leap::physics::PhysXObject::PhysXObject(void* pOwner)
 	: m_pOwner{ pOwner }
 {
@@ -137,17 +139,22 @@ void leap::physics::PhysXObject::UpdateObject(PhysXEngine* pEngine, IPhysicsScen
 
 	if (m_pRigidbody)
 	{
-		m_pActor = pEngine->GetPhysics()->createRigidDynamic(physx::PxTransform{ physx::PxIdentity });
+		m_pActor = pEngine->GetPhysics()->createRigidDynamic(GetPhysXTransform());
 		static_cast<physx::PxRigidDynamic*>(m_pActor)->setLinearDamping(0.0f);
 		static_cast<physx::PxRigidDynamic*>(m_pActor)->setAngularDamping(0.05f);
 	}
 	else
 	{
-		m_pActor = pEngine->GetPhysics()->createRigidStatic(physx::PxTransform{ physx::PxIdentity });
+		m_pActor = pEngine->GetPhysics()->createRigidStatic(GetPhysXTransform());
 	}
+
+	physx::PxMaterial* material = pEngine->GetPhysics()->createMaterial(0.5f, 0.5f, 0.6f);
 
 	for (IPhysXShape* pShape : m_pShapes)
 	{
+		material;
+		pShape;
+		// physx::PxRigidActorExt::createExclusiveShape(*m_pActor, physx::PxBoxGeometry{ 0.5f, 0.5f, 0.5f }, *material);
 		m_pActor->attachShape(pShape->GetShape());
 	}
 
@@ -161,13 +168,8 @@ void leap::physics::PhysXObject::UpdateTransform()
 	if (m_pActor == nullptr) return;
 
 	m_IsTransformDirty = false;
-	
-	const glm::quat offsetRotation = m_Rotation * OFFSET_SET;
-	const physx::PxVec3 position{ m_Position.x, m_Position.y, m_Position.z };
-	const physx::PxQuat rotation{ offsetRotation.x, offsetRotation.y, offsetRotation.z, offsetRotation.w };
-	const physx::PxTransform transform{ position, rotation };
 
-	m_pActor->setGlobalPose(transform);
+	m_pActor->setGlobalPose(GetPhysXTransform());
 }
 
 void leap::physics::PhysXObject::UpdateRigidbody()
@@ -250,6 +252,14 @@ void leap::physics::PhysXObject::CalculateCenterOfMass() const
 	physx::PxRigidDynamic* pRigidbody{ static_cast<physx::PxRigidDynamic*>(m_pActor) };
 
 	physx::PxRigidBodyExt::setMassAndUpdateInertia(*pRigidbody, pRigidbody->getMass());
+}
+
+physx::PxTransform leap::physics::PhysXObject::GetPhysXTransform() const
+{
+	const glm::quat offsetRotation = m_Rotation * OFFSET_SET;
+	const physx::PxVec3 position{ m_Position.x, m_Position.y, m_Position.z };
+	const physx::PxQuat rotation{ offsetRotation.x, offsetRotation.y, offsetRotation.z, offsetRotation.w };
+	return { position, rotation };
 }
 
 void leap::physics::PhysXObject::OnRigidBodyUpdateRequest()

@@ -14,6 +14,7 @@
 namespace physx
 {
 	class PxRigidActor;
+	class PxTransform;
 }
 
 namespace leap::physics
@@ -45,6 +46,8 @@ namespace leap::physics
 		void UpdateTransform();
 		void UpdateRigidbody();
 		void CalculateCenterOfMass() const;
+
+		physx::PxTransform GetPhysXTransform() const;
 
 		void OnRigidBodyUpdateRequest();
 
