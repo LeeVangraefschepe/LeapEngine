@@ -62,8 +62,5 @@ namespace leap::physics
 		bool m_IsObjectDirty{ true };
 		bool m_IsTransformDirty{ true };
 		bool m_NewFrame{ false };
-
-		inline static const glm::quat OFFSET_SET{ 0.7071068f, 0, 0, -0.7071068f };
-		inline static const glm::quat OFFSET_GET{ 0.7071068f, 0, 0, 0.7071068f };
 	};
 }

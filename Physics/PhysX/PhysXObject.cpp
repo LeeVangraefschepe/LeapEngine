@@ -54,9 +54,8 @@ void leap::physics::PhysXObject::Apply(const std::function<void(void*, const glm
 	const physx::PxTransform transform{ m_pActor->getGlobalPose() };
 	const glm::vec3 position{ transform.p.x, transform.p.y, transform.p.z };
 	const glm::quat rotation{ transform.q.w, transform.q.x, transform.q.y, transform.q.z };
-	const glm::quat offsetRotation{ rotation * OFFSET_GET };
 
-	setFunc(m_pOwner, position, offsetRotation);
+	setFunc(m_pOwner, position, rotation);
 }
 
 void leap::physics::PhysXObject::AddShape(IShape* pShape)
@@ -257,18 +256,8 @@ void leap::physics::PhysXObject::CalculateCenterOfMass() const
 physx::PxTransform leap::physics::PhysXObject::GetPhysXTransform() const
 {
 	const physx::PxVec3 position{ m_Position.x, m_Position.y, m_Position.z };
-
-	if (m_pRigidbody)
-	{
-		const glm::quat offsetRotation = m_Rotation * OFFSET_SET;
-		const physx::PxQuat rotation{ offsetRotation.x, offsetRotation.y, offsetRotation.z, offsetRotation.w };
-		return { position, rotation };
-	}
-	else
-	{
-		const physx::PxQuat rotation{ m_Rotation.x, m_Rotation.y, m_Rotation.z, m_Rotation.w };
-		return { position, rotation };
-	}
+	const physx::PxQuat rotation{ m_Rotation.x, m_Rotation.y, m_Rotation.z, m_Rotation.w };
+	return { position, rotation };
 }
 
 void leap::physics::PhysXObject::OnRigidBodyUpdateRequest()

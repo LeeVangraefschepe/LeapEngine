@@ -172,8 +172,7 @@ void leap::physics::PhysXMeshShape::SetMesh(const std::vector<Vertex>& vertices,
 
 void leap::physics::PhysXMeshShape::SetRelativeTransform(const glm::vec3& position, const glm::quat& rotation)
 {
-	const physx::PxQuat pxRotation{ physx::PxQuat{ rotation.x, rotation.y, rotation.z,rotation.w } };
-	m_pShape->setLocalPose(physx::PxTransform{ physx::PxVec3{ position.x, position.y, position.z }, physx::PxQuat{ physx::PxHalfPi, physx::PxVec3{ 0.0f, 0.0f, 1.0f } } *pxRotation });
+	m_pShape->setLocalPose(physx::PxTransform{ physx::PxVec3{ position.x, position.y, position.z }, physx::PxQuat{ rotation.x, rotation.y, rotation.z,rotation.w } });
 }
 
 glm::vec3 leap::physics::PhysXMeshShape::GetRelativePosition()

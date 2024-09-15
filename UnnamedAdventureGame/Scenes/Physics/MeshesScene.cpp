@@ -34,11 +34,12 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 	pFloorObj->GetTransform()->SetWorldPosition(0.0f, -3.0f, 0.0f);
 
 	leap::BoxCollider* pFloorCollider{ pFloorObj->AddComponent<leap::BoxCollider>() };
-	pFloorCollider->SetSize(10, 2, 10);
+	pFloorCollider->SetSize(10, 2, 2);
 
-	leap::Mesh mesh{ "Data/bunny.obj" };
+	const leap::Mesh mesh{ "Data/bunny.obj" };
 	const leap::Material meshMat{ leap::Material::Create<leap::graphics::shaders::Pos3D>("Mesh Material") };
 
+	// Create static mesh collider
 	{
 		leap::GameObject* pMeshObj{ scene.CreateGameObject("Mesh") };
 		pMeshObj->GetTransform()->SetWorldPosition(-5, 0, 0);
@@ -47,10 +48,11 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 		pMeshRenderer->SetMesh(mesh);
 		pMeshRenderer->SetMaterial(meshMat);
 
-		// leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
-		// pMeshCollider->SetMesh(mesh);
+		leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
+		pMeshCollider->SetMesh(mesh);
 	}
 
+	// Create dynamic mesh collider
 	{
 		leap::GameObject* pMeshObj{ scene.CreateGameObject("MeshRB") };
 		pMeshObj->GetTransform()->SetWorldPosition(0, 0, 0);
@@ -65,6 +67,7 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 		pMeshObj->AddComponent<leap::Rigidbody>();
 	}
 
+	// Create kinematic mesh collider
 	{
 		leap::GameObject* pMeshObj{ scene.CreateGameObject("MeshRB kinematic") };
 		pMeshObj->GetTransform()->SetWorldPosition(5, 0, 0);
@@ -73,10 +76,10 @@ void unag::MeshesScene::Load(leap::Scene& scene)
 		pMeshRenderer->SetMesh(mesh);
 		pMeshRenderer->SetMaterial(meshMat);
 
-		// leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
-		// pMeshCollider->SetMesh(mesh);
+		leap::MeshCollider* pMeshCollider{ pMeshObj->AddComponent<leap::MeshCollider>() };
+		pMeshCollider->SetMesh(mesh);
 
-		// auto rb = pMeshObj->AddComponent<leap::Rigidbody>();
-		// rb->SetKinematic(true);
+		leap::Rigidbody* rb = pMeshObj->AddComponent<leap::Rigidbody>();
+		rb->SetKinematic(true);
 	}
 }
