@@ -43,7 +43,6 @@ namespace leap
 	protected:
 		virtual void SetupShape(physics::IPhysicsMaterial* pMaterial) = 0;
 		virtual void RescaleShape() = 0;
-		physics::IPhysicsMaterial* GetMaterial() const { return m_pMaterial.get(); }
 
 		std::unique_ptr<physics::IShape> m_pShape{};
 
