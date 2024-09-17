@@ -10,7 +10,7 @@ namespace leap::networking
 		virtual bool GetPacket(BasePacket& packet) = 0;
 		virtual void SendTCP(const BasePacket& packet) = 0;
 		virtual void SendUDP(const BasePacket& packet) = 0;
-		virtual void Run(float ticks) = 0;
+		virtual void Run() = 0;
 		virtual bool IsConnected() = 0;
 	};
 }

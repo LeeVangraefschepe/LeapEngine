@@ -5,7 +5,7 @@
 leap::NetworkLogger::NetworkLogger()
 {
 	SetEnabled(true);
-    m_Client.Run(10);
+    m_Client.Run();
 }
 
 leap::NetworkLogger::~NetworkLogger()

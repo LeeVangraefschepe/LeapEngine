@@ -2,7 +2,6 @@
 #include "../Interfaces/BasePacket.h"
 #include <numeric>
 #include <sstream>
-#include <utility>
 #include <vector>
 
 namespace leap::networking

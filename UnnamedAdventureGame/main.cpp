@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include "Leap.h"
 #include "GameContext/GameContext.h"
-#include "GameContext/Logger/ImGuiLogger.h"
+#include "GameContext/Logger/ConsoleLogger.h"
 #include "GameContext/Logger/NetworkLogger.h"
 #include "SceneGraph/SceneManager.h"
 #include <ServiceLocator/ServiceLocator.h>
@@ -17,7 +17,8 @@
 
 int main()
 {
-	leap::GameContext::GetInstance().AddLogger<leap::ImGuiLogger>();
+	leap::GameContext::GetInstance().AddLogger<leap::ConsoleLogger>();
+	leap::GameContext::GetInstance().AddLogger<leap::NetworkLogger>();
 
 	leap::LeapEngine engine{ 1280, 720, "Leap game engine" };
 
